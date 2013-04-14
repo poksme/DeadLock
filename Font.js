@@ -6,7 +6,7 @@ function Font() {
 	Font.prototype._singletonInstance = this;
 //
 // PROPERTIES
-	var blockWidth = 5;
+	var blockWidth;
 	var leftPadding = 0;
 	var topPadding = 0;
 	var msg = "0xDEAD10CC";
@@ -76,6 +76,10 @@ function Font() {
 		],
 	};
 //
+	this.ReInit = function () {
+		blockWidth = Math.min(config.screenWidth, config.screenHeight) * 0.006; // 5
+	}
+	this.ReInit();
 // METHODS
 	this.Update = function (timer) {
 		blockWidth += timer.GetSin() / 400;
@@ -85,7 +89,7 @@ function Font() {
 	this.Draw = function (canvas) {
 		var ctx = canvas.GetContext();
 		ctx.beginPath();
-		ctx.strokeStyle = '#FFF';
+		ctx.strokeStyle = '#DEAD';
 		ctx.lineWidth = blockWidth + 1;
 		ctx.lineJoin = 'miter';
 		ctx.fillStyle = '#000';

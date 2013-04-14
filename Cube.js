@@ -10,34 +10,48 @@ function Cube () {
 		y:0,
 		z:0
 	};
-	var position = {
-		x: config.screenWidth / 2,
-		y: config.screenHeight / 2,
-		z: config.screenHeight * config.scaleMultiplier //0.77
-	};
-	position.z = 3.4//1.8;
-	var size = 60;
-	var dimensions = [
-		{x: size, y: size, z:-size},
-		{x: size, y: size, z: size},
-		{x: size, y:-size, z:-size},
-		{x: size, y:-size, z: size},
-		{x:-size, y: size, z:-size},
-		{x:-size, y: size, z: size},
-		{x:-size, y:-size, z:-size},
-		{x:-size, y:-size, z: size}
-	];
+	var thickness = 0.6;
 	var faces = [
-		[2, 3, 7, 6],
-		[0, 1, 5, 4],
-		[0, 1, 3, 2],
-		[4, 5, 7, 6],
-		[0, 2, 6, 4],
-		[1, 5, 7, 3]
+		[0, 2],
+		[1, 3],
+		[5, 7],
+		[4, 6],
+		[6, 2],
+		[2, 3],
+		[3, 7],
+		[7, 6],
+		[4, 0],
+		[0, 1],
+		[1, 5],
+		[5, 4]
 	];
 	var offsets = [];
+
+	var position;
+	var size;
+	var dimensions;
 //
 // METHODS
+	this.ReInit = function () {
+		position = {
+			x: config.screenWidth / 2,
+			y: config.screenHeight / 2,
+			z: (2000 - Math.min(config.screenWidth, config.screenHeight)) / 400// Math.min(config.screenWidth, config.screenHeight) / 200
+		};
+		size = Math.min(config.screenWidth, config.screenHeight) / 10;//60; //
+		dimensions = [
+			{x: size, y: size, z:-size},
+			{x: size, y: size, z: size},
+			{x: size, y:-size, z:-size},
+			{x: size, y:-size, z: size},
+			{x:-size, y: size, z:-size},
+			{x:-size, y: size, z: size},
+			{x:-size, y:-size, z:-size},
+			{x:-size, y:-size, z: size}
+		];
+			// cube.SetScale((2000 - Math.min(config.screenWidth, config.screenHeight)) / 400);
+	};
+	this.ReInit();
 	// INPUTS
 		this.MoveLeft = function (dist) {
 			position.x -= dist;
@@ -57,6 +71,9 @@ function Cube () {
 		this.ScaleDown = function (zoom) {
 			position.z *= zoom;
 		};
+		this.SetScale = function (val) {
+			position.z = val;
+		}
 		this.TurnX = function (deg) {
 			angle.x += deg;
 		};
@@ -68,6 +85,12 @@ function Cube () {
 		};
 		this.SetPosX = function (val) {
 			position.x = val;
+		}
+		this.ThicknessUp = function (val) {
+			thickness *= val;
+		}
+		this.ThicknessDown = function (val) {
+			thickness /= val;
 		}
 	//
 	// UPDATE
@@ -110,14 +133,14 @@ function Cube () {
 			var ctx = canvas.GetContext();
 			ctx.beginPath();
 			ctx.strokeStyle = '#FFF';
-			ctx.lineWidth = 1;
+			ctx.lineWidth = thickness;
 			for (var i = 0; i < faces.length; i++) {
 				for (var j = 0; j < faces[i].length; j++) {
 					if (j === 0) {
 						MoveTo(ctx, faces[i][j]);
 					} else if (j + 1 === faces[i].length) {
 						LineTo(ctx, faces[i][j]);
-						LineTo(ctx, faces[i][0]);
+						// LineTo(ctx, faces[i][0]);
 					} else {
 						LineTo(ctx, faces[i][j])
 					}

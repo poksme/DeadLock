@@ -9,19 +9,21 @@ function Update (timer) {
 	cube.TurnY(config.speed / 3 * timer.GetElapsedTime());
 	cube.TurnZ(config.speed / 3 * timer.GetElapsedTime());
 	if (timer.GetSin() < 0) {
-		cube.ScaleDown(1 + Math.abs(timer.GetSin() / 30)); // 50
+		cube.ScaleDown(1 + Math.abs(timer.GetSin() / 50)); // 50
+		cube.ThicknessDown(1 + Math.abs(timer.GetSin() / 50));
 	} else {
-		cube.ScaleUp(1 + timer.GetSin() / 30);
+		cube.ScaleUp(1 + timer.GetSin() / 50);
+		cube.ThicknessUp(1 + Math.abs(timer.GetSin() / 50));
 	}
-	cube.SetPosX(config.screenWidth / 2 + timer.GetSin() * 200);
-	background.Update(timer);
+	cube.SetPosX(config.screenWidth / 2 + timer.GetSin() * (Math.min(config.screenWidth, config.screenHeight) / 3.5))//200);
 	cube.Update(timer);
+	background.Update(timer);
 	font.Update(timer);
 }
 
 function Draw (canvas, timer) {
 	canvas.ClearScreen();
-	background.Draw(canvas);
+	// background.Draw(canvas);
 	if (timer.GetLastSin() > timer.GetSin()) {
 		font.Draw(canvas);
 		cube.Draw(canvas);
@@ -33,6 +35,13 @@ function Draw (canvas, timer) {
 
 $(document).ready(function () {
 	var canvas = new Canvas();
+	window.onresize = function () {
+		config.screenWidth = window.innerWidth;
+		config.screenHeight = window.innerHeight;
+		canvas.ReInit();
+		cube.ReInit();
+		font.ReInit();
+	}
 	var timer = new Timer();
 	setInterval(function () {
 		Update(timer);
