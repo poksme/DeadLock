@@ -9,16 +9,16 @@ function Font() {
 	var blockWidth;
 	var leftPadding = 0;
 	var topPadding = 0;
-	var msg = "0xDEAD10CC";
+	var msg = "0x0x0x";
 	var characters = {
 		'0': [
-		" XXX ",
+		"XXXX ",
 		"X   X",
-		"XX  X",
-		"X X X",
-		"X  XX",
 		"X   X",
-		" XXX "
+		"XXXX ",
+		"X X  ",
+		"X  X ",
+		"X   X"
 		],
 		'x':[
 		"     ",
